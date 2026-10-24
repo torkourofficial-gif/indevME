@@ -5,11 +5,12 @@ The first porting slice lives in `src/midp/java` and uses the Java package
 project for CLDC 1.1, MIDP 2.0, and the JSR-184 M3G API exposed by the target
 Jbed build. The MIDlet entry point is `mindev.MindevMidlet`.
 
-`MindevCanvas` renders an 8x8 sample terrain as one M3G mesh. Its compact byte
-array uses the same block IDs and layout as Indev's `World.blocks` array:
-`(y * length + z) * width + x`. The sample uses Indev grass (2), dirt (3), and
-stone (1). This keeps the rendering adapter ready to accept a real block array
-without creating one scene-graph object per block.
+`MindevCanvas` renders an 8x5x8 sample terrain as one M3G mesh. The reusable
+`MindevTerrainMesh` accepts a compact byte array with the same block IDs and
+layout as Indev's `World.blocks` array: `(y * length + z) * width + x`. It emits
+only faces next to air, including cave faces, and limits a mesh to 1,024 blocks
+to bound temporary geometry memory. The sample uses Indev grass (2), dirt (3),
+and stone (1); the color palette is temporary until the texture atlas is ported.
 
 The launch descriptor should name `mindev.MindevMidlet` as its `MIDlet-1`
 class. NetBeans can compile this first slice with only the MIDlet/M3G APIs;
